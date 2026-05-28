@@ -1,8 +1,8 @@
 import numpy as np
 from dataclasses import dataclass
 
-from dynamics.environment import Environment
-from dynamics.propulsion import Propulsion
+from .environment import Environment
+from .propulsion import PropulsionSystem
 
 @dataclass
 class RocketState:
@@ -13,15 +13,15 @@ class RocketState:
     time : float = 0.0
 
     def __post_init__(self):
-        self.position = np.asarray(self.position, dtype=np.float)
-        self.velocity = np.asarray(self.velocity, dtype=np.float)
+        self.position = np.asarray(self.position, dtype=float)
+        self.velocity = np.asarray(self.velocity, dtype=float)
 
 class PointMassRocket:
     """3DOF point mass rocket dynamics"""
     def __init__(self):
         self.state : RocketState = None
         self.environment : Environment = None
-        self.propulsion : Propulsion = None
+        self.propulsion : PropulsionSystem = None
     
     def initialize(self, initial_position : np.ndarray, initial_velocity : np.ndarray, initial_mass : float):
         self.state = RocketState(position=initial_position, velocity=initial_velocity, mass=initial_mass)
@@ -29,7 +29,7 @@ class PointMassRocket:
     def set_environment(self, environment : Environment):
         self.environment = environment
 
-    def set_propulsion(self, propulsion : Propulsion):
+    def set_propulsion(self, propulsion : PropulsionSystem):
         self.propulsion = propulsion
     
     def derivatives(self, state :  RocketState) -> tuple[np.ndarray, float]:

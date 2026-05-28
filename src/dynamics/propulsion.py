@@ -2,7 +2,7 @@ import numpy as np
 from typing import Callable
 from config import GRAVITY
 
-class Propulsion:
+class PropulsionSystem:
     """Model for rocket propulsion, including thrust and mass flow rate."""
     def __init__(self):
         self.burn_time = 0.0  # seconds
