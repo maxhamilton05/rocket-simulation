@@ -1,4 +1,4 @@
-from simulation import RocketSimulator
+from .simulation import RocketSimulator
 
 def main():
     # Create simulator instance

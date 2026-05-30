@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rocket-sim"
+version = "0.1.0"
+description = "Minimal rocket simulation package."
+authors = [
+    { name = "Max" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11"
+]
+
+[project.urls]
+"Source" = "https://example.com/rocket-sim"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["rocket_sim"]

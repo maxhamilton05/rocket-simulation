@@ -8,8 +8,8 @@ class SimulationLogger:
     def __init__(self):
         self.data : dict[str, list[float]] = defaultdict(list)
 
-    def record(self, state, environment, propulstion):
-        """Record relevant data from the current state, environment, and propulsioin."""
+    def record(self, state, environment, propulsion):
+        """Record relevant data from the current state, environment, and propulsion."""
         self.data['time'].append(state.time)
         self.data['position_x'].append(state.position[0])
         self.data['position_y'].append(state.position[1])
@@ -25,10 +25,10 @@ class SimulationLogger:
         gravity_accel = environment.get_gravity(state.position)  # m/s^2
         weight_force = gravity_accel * state.mass  # W = m * g
         drag_force = environment.get_drag(state.velocity, state.position)
-        thrust_force = propulstion.get_thrust(state.time)
+        thrust_force = propulsion.get_thrust(state.time)
 
         self.data['gravity_accel'].append(np.linalg.norm(gravity_accel))
-        self.data['weight'].append(weight_force)
+        self.data['weight'].append(np.linalg.norm(weight_force))
         self.data['drag'].append(np.linalg.norm(drag_force))
         self.data['thrust'].append(np.linalg.norm(thrust_force))
 

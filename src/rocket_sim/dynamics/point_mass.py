@@ -38,6 +38,7 @@ class PointMassRocket:
         gravity_force = self.environment.get_gravity(state.position) * state.mass  # F = m * g
         thrust_force = self.propulsion.get_thrust(state.time)  # F = T
         drag_force = self.environment.get_drag(state.velocity, state.position)  # F = D
+        # When wind is implemented, turn the wind vector into a force
         wind_force = self.environment.get_wind(state.position)  # F = W (not implemented yet)
 
         # Sum forces and calculate acceleration
@@ -60,6 +61,8 @@ class PointMassRocket:
         self.state.mass += mass_flow_rate * dt  # mass flow rate is negative when burning fuel
         self.state.time += dt
 
-        # Prevent negative mass
-        if self.state.mass < 0.1:
+        # Prevent negative mass or mass below the dry mass
+        if self.propulsion is not None and self.state.mass < self.propulsion.dry_mass:
+            self.state.mass = self.propulsion.dry_mass
+        elif self.state.mass < 0.1:
             self.state.mass = 0.1

@@ -1,6 +1,6 @@
-from dynamics import PointMassRocket, PropulsionSystem, Environment
+from ..dynamics import PointMassRocket, PropulsionSystem, Environment
 from .logger import SimulationLogger
-from config import DT, MAX_SIM_TIME
+from ..config import DT, MAX_SIM_TIME
 
 class RocketSimulator:
     """Main class to run a full rocket simulation."""
@@ -32,7 +32,12 @@ class RocketSimulator:
         self.rocket.set_environment(self.environment)
         self.rocket.set_propulsion(self.propulsion)
 
-        self.propulsion.set_constant_thrust(thrust=thrust, burn_time=burn_time, dry_mass=initial_mass * 0.3)
+        self.propulsion.set_constant_thrust(
+            thrust=thrust,
+            burn_time=burn_time,
+            dry_mass=initial_mass * 0.3,
+            initial_mass=initial_mass,
+        )
 
         # Initialize rocket state
         self.rocket.initialize(initial_position, initial_velocity, initial_mass)
