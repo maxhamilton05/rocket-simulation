@@ -50,19 +50,67 @@ class PointMassRocket:
 
         return acceleration, mass_flow_rate
 
-    def step(self, dt: float):
+    def step(self, dt: float, method: str = "euler"):
         """Advance the simulation by one time step."""
+        if method == "rk4":
+            return self.step_rk4(dt)
+
         # Get derivatives
         acceleration, mass_flow_rate = self.derivatives(self.state)
 
-        # Forward Euler integration (improve later, likely RK4)
+        # Forward Euler integration
         self.state.velocity += acceleration * dt
         self.state.position += self.state.velocity * dt
         self.state.mass += mass_flow_rate * dt  # mass flow rate is negative when burning fuel
         self.state.time += dt
 
+        self._clamp_mass()
+
+    def step_rk4(self, dt: float):
+        """Advance the simulation by one time step using RK4 integration."""
+        def state_derivatives(state: RocketState):
+            acceleration, mass_flow_rate = self.derivatives(state)
+            return state.velocity, acceleration, mass_flow_rate
+
+        s0 = self.state
+        k1_v, k1_a, k1_m = state_derivatives(s0)
+
+        s1 = RocketState(
+            position=s0.position + 0.5 * k1_v * dt,
+            velocity=s0.velocity + 0.5 * k1_a * dt,
+            mass=s0.mass + 0.5 * k1_m * dt,
+            time=s0.time + 0.5 * dt,
+        )
+        k2_v, k2_a, k2_m = state_derivatives(s1)
+
+        s2 = RocketState(
+            position=s0.position + 0.5 * k2_v * dt,
+            velocity=s0.velocity + 0.5 * k2_a * dt,
+            mass=s0.mass + 0.5 * k2_m * dt,
+            time=s0.time + 0.5 * dt,
+        )
+        k3_v, k3_a, k3_m = state_derivatives(s2)
+
+        s3 = RocketState(
+            position=s0.position + k3_v * dt,
+            velocity=s0.velocity + k3_a * dt,
+            mass=s0.mass + k3_m * dt,
+            time=s0.time + dt,
+        )
+        k4_v, k4_a, k4_m = state_derivatives(s3)
+
+        self.state.position = s0.position + dt * (k1_v + 2.0 * k2_v + 2.0 * k3_v + k4_v) / 6.0
+        self.state.velocity = s0.velocity + dt * (k1_a + 2.0 * k2_a + 2.0 * k3_a + k4_a) / 6.0
+        self.state.mass = s0.mass + dt * (k1_m + 2.0 * k2_m + 2.0 * k3_m + k4_m) / 6.0
+        self.state.time += dt
+
+        self._clamp_mass()
+
+    def _clamp_mass(self):
         # Prevent negative mass or mass below the dry mass
         if self.propulsion is not None and self.state.mass < self.propulsion.dry_mass:
             self.state.mass = self.propulsion.dry_mass
         elif self.state.mass < 0.1:
             self.state.mass = 0.1
+
+    
