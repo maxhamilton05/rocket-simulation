@@ -136,6 +136,7 @@ These limitations also provide opportunities for future development.
 Potential extensions include:
 
 - 6DOF rigid-body dynamics
+- Monte Carlo simulation
 - Time-varying thrust curves
 - More realistic atmospheric models
 - Wind modeling
