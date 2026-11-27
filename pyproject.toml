@@ -11,6 +11,10 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.11"
+dependencies = [
+    "matplotlib",
+    "numpy",
+]
 license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -22,4 +26,6 @@ classifiers = [
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["rocket_sim"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

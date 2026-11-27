@@ -1,4 +1,5 @@
 from .simulation import RocketSimulator
+from .visualization.plotter import plot_telemetry
 
 def main():
     # Create simulator instance
@@ -24,6 +25,9 @@ def main():
     print(f"Maximum Speed: {data['speed'].max():.1f} m/s")
     print(f"Final Mass: {data['mass'][-1]:.1f} kg")
     print(f"Simulation Duration: {data['time'][-1]:.1f} seconds")
+
+    plot_telemetry(data)
+
 
 if __name__ == "__main__":
     main()
