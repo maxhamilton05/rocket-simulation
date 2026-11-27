@@ -48,7 +48,7 @@ class RocketSimulator:
         print("Starting simulation...")
 
         while self.rocket.state.time < self.max_time:
-            self.rocket.step(self.dt)
+            self.rocket.step_rk4(self.dt)
             self.logger.record(self.rocket.state, self.environment, self.propulsion)
 
         print("Simulation complete.")
