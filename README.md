@@ -1,4 +1,4 @@
-# Rocket Simulation
+## Rocket Simulation
 
 A Python-based 3DOF point-mass rocket trajectory simulator designed to explore rocket flight dynamics, propulsion, environmental modeling, and numerical integration.
 
@@ -11,7 +11,7 @@ The simulation outputs a multi-panel telemetry dashboard to evaluate critical as
 ![Flight Performance Dashboard](assets/trajectory_dashboard.png)
 *Figure: Nominal flight performance tracking altitude, velocity, downrange distance, and dynamic pressure ($Q$) to identify Max Q.*
 
-# Features
+## Features
 
 3DOF point-mass rocket dynamics
 - Position and velocity represented in a North-East-Down coordinate frame
@@ -39,7 +39,7 @@ Simulation and data logging
 - Records position, velocity, speed, altitude, mass, thrust, drag, weight, and gravitational acceleration
 - Outputs simulation data as NumPy arrays for analysis and visualization
 
-# Model
+## Model
 
 The rocket is represented as a point mass with the state
 
@@ -77,7 +77,7 @@ $$
 
 Gravity is modeled using an inverse-square relationship with altitude, while atmospheric density is approximated using an exponential atmosphere model.
 
-# Numerical Integration
+## Numerical Integration
 
 The simulator currently supports Forward Euler and RK4 integration.
 
@@ -91,7 +91,7 @@ $$
 
 This provides substantially higher-order accuracy than Forward Euler for a comparable timestep and makes RK4 useful for studying the effects of numerical integration error on trajectory simulation.
 
-# Installation
+## Installation
 
 Python 3.11 or newer is required.
 
@@ -105,7 +105,7 @@ Install the package:
 
 pip install -e .
 
-# Running the Simulation
+## Running the Simulation
 
 The simulator can be run as a Python module:
 
@@ -121,7 +121,7 @@ The main simulation parameters can be configured through the simulator setup, in
 - Simulation timestep
 - Maximum simulation time
 
-# Current Limitations
+## Current Limitations
 
 This project is intended as an educational and engineering-focused simulation framework rather than a high-fidelity flight simulator.
 
@@ -138,7 +138,7 @@ Current simplifications include:
 
 These limitations also provide opportunities for future development.
 
-# Future Work
+## Future Work
 
 Potential extensions include:
 
@@ -154,6 +154,6 @@ Potential extensions include:
 - Numerical accuracy and convergence studies
 - Improved trajectory visualization
 
-# License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
