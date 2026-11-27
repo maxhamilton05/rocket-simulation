@@ -4,6 +4,13 @@ A Python-based 3DOF point-mass rocket trajectory simulator designed to explore r
 
 The simulator models a rocket's motion through the atmosphere using variable mass, thrust, gravity, and aerodynamic drag. The simulation architecture separates the physical models from the simulation loop and data logging, making the system straightforward to extend with additional physics models and numerical methods.
 
+## Flight Trajectory & Performance Dashboard
+
+The simulation outputs a multi-panel telemetry dashboard to evaluate critical ascent parameters, staging events, and structural loads. 
+
+![Flight Performance Dashboard](assets/trajectory_dashboard.png)
+*Figure: Nominal flight performance tracking altitude, velocity, downrange distance, and dynamic pressure ($Q$) to identify Max Q.*
+
 # Features
 
 3DOF point-mass rocket dynamics
