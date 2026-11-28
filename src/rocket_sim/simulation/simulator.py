@@ -42,13 +42,13 @@ class RocketSimulator:
         # Initialize rocket state
         self.rocket.initialize(initial_position, initial_velocity, initial_mass)
     
-    def run(self):
+    def run(self, method = "rk4"):
         """Run the simulation loop."""
         """Runs the simulation until burnout + some coasting time."""
         print("Starting simulation...")
 
         while self.rocket.state.time < self.max_time:
-            self.rocket.step_rk4(self.dt)
+            self.rocket.step(self.dt, method=method)
             self.logger.record(self.rocket.state, self.environment, self.propulsion)
 
         print("Simulation complete.")

@@ -15,7 +15,7 @@ def main():
     )
 
     # Run the simulation
-    logger = sim.run()
+    logger = sim.run(method = "rk4")
 
     # Get recorded data for analysis
     data = logger.get_data()

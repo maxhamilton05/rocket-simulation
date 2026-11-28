@@ -33,6 +33,7 @@ Environmental modeling
 Numerical integration
 - Forward Euler integration
 - Fourth-order Runge-Kutta (RK4) integration
+- Velocity Verlet integration
 
 Simulation and data logging
 - Configurable simulation timestep and maximum duration
@@ -79,7 +80,11 @@ Gravity is modeled using an inverse-square relationship with altitude, while atm
 
 ## Numerical Integration
 
-The simulator currently supports Forward Euler and RK4 integration.
+The simulator supports Forward Euler, RK4, and Velocity Verlet integration.
+
+The integration method can be selected when running a simulation with
+`sim.run(method="euler")`, `sim.run(method="rk4")`, or
+`sim.run(method="velocity_verlet")`. The simulator defaults to RK4.
 
 RK4 evaluates the state derivatives at four points within each timestep and combines them using the weighted average
 

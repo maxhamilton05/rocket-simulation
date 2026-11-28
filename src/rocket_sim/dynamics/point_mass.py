@@ -54,6 +54,10 @@ class PointMassRocket:
         """Advance the simulation by one time step."""
         if method == "rk4":
             return self.step_rk4(dt)
+        if method == "velocity_verlet":
+            return self.step_velocity_verlet(dt)
+        if method != "euler":
+            raise ValueError(f"Unknown integration method: {method!r}")
 
         # Get derivatives
         acceleration, mass_flow_rate = self.derivatives(self.state)
@@ -65,6 +69,31 @@ class PointMassRocket:
         self.state.time += dt
 
         self._clamp_mass()
+
+    def step_velocity_verlet(self, dt: float):
+        """Advance one step using velocity Verlet with a predicted endpoint velocity."""
+        state = self.state
+        acceleration, mass_flow_rate = self.derivatives(state)
+
+        next_time = state.time + dt
+        next_mass_flow_rate = self.propulsion.get_mass_flow_rate(next_time)
+        next_mass = self._clamped_mass(
+            state.mass + 0.5 * (mass_flow_rate + next_mass_flow_rate) * dt
+        )
+        next_position = state.position + state.velocity * dt + 0.5 * acceleration * dt**2
+        predicted_velocity = state.velocity + acceleration * dt
+        next_state = RocketState(
+            position=next_position,
+            velocity=predicted_velocity,
+            mass=next_mass,
+            time=next_time,
+        )
+        next_acceleration, _ = self.derivatives(next_state)
+
+        self.state.position = next_position
+        self.state.velocity = state.velocity + 0.5 * (acceleration + next_acceleration) * dt
+        self.state.mass = next_mass
+        self.state.time = next_time
 
     def step_rk4(self, dt: float):
         """Advance the simulation by one time step using RK4 integration."""
@@ -108,9 +137,13 @@ class PointMassRocket:
 
     def _clamp_mass(self):
         # Prevent negative mass or mass below the dry mass
-        if self.propulsion is not None and self.state.mass < self.propulsion.dry_mass:
-            self.state.mass = self.propulsion.dry_mass
-        elif self.state.mass < 0.1:
-            self.state.mass = 0.1
+        self.state.mass = self._clamped_mass(self.state.mass)
+
+    def _clamped_mass(self, mass: float) -> float:
+        if self.propulsion is not None and mass < self.propulsion.dry_mass:
+            return self.propulsion.dry_mass
+        if mass < 0.1:
+            return 0.1
+        return mass
 
     
